@@ -13,3 +13,15 @@
 - Dynamic Allocation is for run-time and implemented using heap
 - Vector: Size and capacity (S<=C). Capacity keeps doubling if S==C or if we need to add an extra element when S==C
 - void display(vector<int> & nums) {} is an example of pass by reference
+
+## Practical 
+- 1s ~ 10^8 operations
+- If in a question the condition is n<=10^5, can we write code of O(n^2) complexity? The code will compile but won't get submitted, so it will show TLE (Time limit exceeded) since n^2 = 10^10 > 10^8
+- nlogn = 10^5 * log(10^5) < 10^8
+- n > 10^8 -> O(logn) or O(1)
+- n <= 10^8 -> O(n)
+- n <= 10^6 -> O(n*logn)
+- n <=10^4 -> O(n^2)
+- n<= 500 -> O(n^3)
+- n <= 25 -> O(2^n)
+- n<=12 -> O(n!)
