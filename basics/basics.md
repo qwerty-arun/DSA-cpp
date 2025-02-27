@@ -25,3 +25,9 @@
 - n<= 500 -> O(n^3)
 - n <= 25 -> O(2^n)
 - n<=12 -> O(n!)
+
+## Some things to take care of
+- for(unsigned int i =5;i>=0;i--){} is an infinite loop. 'i' won't be '-1', it will be a very large no
+- mid = (st+end)/2 might result in an overflow for very large indices, so its better to use mid = st + (end-st)/2
+## Basic Math Required
+- lcm and gcd can be calculated using the <numeric> class
