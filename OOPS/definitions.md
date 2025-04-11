@@ -72,32 +72,37 @@ Teacher(string name, string subject)
 ### Single Inheritance
 
 ```mermaid
-A[Parent]-->B[Child]
+graph TD;
+    A[Parent]-->B[Child]
 ```
 
 ### Multi-level Inheritance
 ```mermaid
-A[Grandparent]-->[Parent]-->[Child] 
+graph TD;
+    A[Grandparent]-->[Parent]-->[Child] 
 ```
 
 ### Multiple Inheritance
 ```mermaid
-A[Parent]-->B[Child]
-C[Parent]-->B[Child]
+graph TD;
+    A[Parent]-->B[Child]
+    C[Parent]-->B[Child]
 ```
 > class child: public parent1, public parent2{};
 
-### Hierarchial Inheritance
+### Hierarchical Inheritance
 ```mermaid
-A[Parent]-->B[Child]
-A[Parent]-->C[Child]
+graph TD;
+    A[Parent]-->B[Child]
+    A[Parent]-->C[Child]
 ```
 
 ### Hybrid Inheritance
 ```mermaid
-A-->B
-A-->C
-C-->D
+graph TD;
+    A-->B
+    A-->C
+    C-->D
 ```
 
 ## Polymorphism
