@@ -79,7 +79,8 @@ graph TD;
 ### Multi-level Inheritance
 ```mermaid
 graph TD;
-    A[Grandparent]-->[Parent]-->[Child] 
+    A[Grandparent]-->B[Parent]
+    B[Parent]-->C[Child] 
 ```
 
 ### Multiple Inheritance
