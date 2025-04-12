@@ -1,5 +1,5 @@
 run:
-	g++ -g -o output solution.cpp; ./output
+	g++ -g -o output trial.cpp; ./output
 
 clean:
 	rm output
