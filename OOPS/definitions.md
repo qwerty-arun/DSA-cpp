@@ -67,6 +67,161 @@ Teacher(string name, string subject)
 |Protected| Private | Protected | Protected |
 |Public| Private| Protected | Public|
 
+```cpp
+class Base {
+  public:
+    int x;
+  protected:
+    int y;
+  private:
+    int z;
+};
+
+class PublicDerived: public Base {
+  // x is public
+  // y is protected
+  // z is not accessible from PublicDerived
+};
+
+class ProtectedDerived: protected Base {
+  // x is protected
+  // y is protected
+  // z is not accessible from ProtectedDerived
+};
+
+class PrivateDerived: private Base {
+  // x is private
+  // y is private
+  // z is not accessible from PrivateDerived
+};
+```
+### Public Inheritance
+```cpp
+// C++ program to demonstrate the working of public inheritance
+
+#include <iostream>
+using namespace std;
+
+class Base {
+  private:
+    int pvt = 1;
+
+  protected:
+    int prot = 2;
+
+  public:
+    int pub = 3;
+
+    // function to access private member
+    int getPVT() {
+      return pvt;
+    }
+};
+
+class PublicDerived : public Base {
+  public:
+    // function to access protected member from Base
+    int getProt() {
+      return prot;
+    }
+};
+
+int main() {
+  PublicDerived object1;
+  cout << "Private = " << object1.getPVT() << endl;
+  cout << "Protected = " << object1.getProt() << endl;
+  cout << "Public = " << object1.pub << endl;
+  return 0;
+}
+```
+### Protected Inheritance
+```cpp
+// C++ program to demonstrate the working of protected inheritance
+
+#include <iostream>
+using namespace std;
+
+class Base {
+  private:
+    int pvt = 1;
+
+  protected:
+    int prot = 2;
+
+   public:
+    int pub = 3;
+
+    // function to access private member
+    int getPVT() {
+      return pvt;
+    }
+};
+
+class ProtectedDerived : protected Base {
+  public:
+    // function to access protected member from Base
+    int getProt() {
+      return prot;
+    }
+
+    // function to access public member from Base
+    int getPub() {
+      return pub;
+    }
+};
+
+int main() {
+  ProtectedDerived object1;
+  cout << "Private cannot be accessed." << endl;
+  cout << "Protected = " << object1.getProt() << endl;
+  cout << "Public = " << object1.getPub() << endl;
+  return 0;
+}
+```
+### Private Inheritance
+```cpp
+// C++ program to demonstrate the working of private inheritance
+
+#include <iostream>
+using namespace std;
+
+class Base {
+  private:
+    int pvt = 1;
+
+  protected:
+    int prot = 2;
+
+  public:
+    int pub = 3;
+
+    // function to access private member
+    int getPVT() {
+      return pvt;
+    }
+};
+
+class PrivateDerived : private Base {
+  public:
+    // function to access protected member from Base
+    int getProt() {
+      return prot;
+    }
+
+    // function to access private member
+    int getPub() {
+      return pub;
+    }
+};
+
+int main() {
+  PrivateDerived object1;
+  cout << "Private cannot be accessed." << endl;
+  cout << "Protected = " << object1.getProt() << endl;
+  cout << "Public = " << object1.getPub() << endl;
+  return 0;
+}
+```
 ## Types of Inheritance
 
 ### Single Inheritance
@@ -117,11 +272,75 @@ graph TD;
 - Dynamic in nature
 - `virtual` keyword defined inside the base class and are always declared with a base class and overridden in a child class
 - A virtual function is called during Runtime
+- `override` specifier ensures that function in 'Base' class is overridden by the function in 'Derived' class
+- Mistakes that we can make: Base function is print() but in derived we write prin(), different return types, different parameters, not virtual function in the base class
+
+### Pure Virtual Functions
+- Used if a function doesn't have any use in the base class but the function must be implemented by all its derived classes
+```cpp
+class Shape {
+    public:
+
+      // creating a pure virtual function
+      virtual void calculateArea() = 0;
+};
+
+```
 
 ## Abstraction
 - Hiding all unnecessary details and showing only the important parts
 - Access modifiers/specifiers: data hiding using private
-### Abstract Classes
+
+## Abstract Classes
 - Used to provide a base class from which other classes can be derived
 - They can't be instantiated and are meant to be inherited
 - Are typically used to define an interface for derived classes
+- Contains a pure virtual function
+
+## Static Keyword
+### Static Variables
+- Variables declared as static in a function are created and initialized once for the lifetime of the program
+- In a class, they are created and initialized once. They are shared by all the objects of the class.
+```cpp
+void func()
+{
+    static int x = 0; //only once init
+    cout<<x;
+    x++;
+}
+int main()
+{
+    func();
+    func();
+    func();
+}
+// Output will be: 0 1 2
+```
+
+## Friend Functions and Friend Classes
+### Friend Functions
+- Can access the private and protected data of a class
+- Declared using the `friend` keyword inside the body of the class
+```cpp
+class className{
+  friend int fn();
+}
+
+```
+### Friend Classes
+- When a class is declared a friend class, all the member functions of the friend class become friend functions
+```cpp
+class ClassB;
+
+class ClassA
+{
+  friend class ClassB;
+}
+class ClassB
+{
+
+}
+```
+- Since ClassB is a friend class, we can access all members of ClassA from inside ClassB
+- But we can't access members of ClassB from inside ClassA
+- Friend relation is only granted, not taken
