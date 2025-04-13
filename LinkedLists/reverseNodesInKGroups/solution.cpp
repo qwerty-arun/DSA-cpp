@@ -47,18 +47,17 @@ public:
 
     void popFront() {
         if (head == nullptr) {
-            std::cout << "Linklist is empty" << std::endl;
+            std::cout << "Linked list is empty" << std::endl;
             return;
         }
         Node* temp = head;
         head = head->next;
-        temp->next = nullptr;
         delete temp;
     }
 
     void popBack() {
         if (head == nullptr) {
-            std::cout << "Linklist is empty" << std::endl;
+            std::cout << "Linked list is empty" << std::endl;
             return;
         }
         if (head == tail) {
@@ -109,6 +108,35 @@ public:
         }
         return -1;
     }
+
+    Node* reverseKGrp(Node* head, int k) {
+        Node* temp = head;
+        int count = 0;
+
+        // Check if there are at least k nodes
+        while (count < k && temp != nullptr) {
+            temp = temp->next;
+            count++;
+        }
+        if (count < k) return head;
+
+        // Reverse k nodes
+        Node* prev = reverseKGrp(temp, k); // Recursive call
+        temp = head;
+        count = 0;
+        while (count < k) {
+            Node* next = temp->next;
+            temp->next = prev;
+            prev = temp;
+            temp = next;
+            count++;
+        }
+        return prev;
+    }
+
+    void reverseKGroup(int k) {
+        head = reverseKGrp(head, k);
+    }
 };
 
 int main() {
@@ -117,15 +145,19 @@ int main() {
     ll.pushFront(2);
     ll.pushFront(3);
     ll.pushBack(4);
+    ll.pushBack(5);
+    ll.pushBack(6);
+    ll.pushBack(7);
+    ll.pushBack(8);
+
+    std::cout << "Original list:\n";
     ll.printLinkedList();
-    ll.popFront();
+
+    ll.reverseKGroup(3);
+
+    std::cout << "List after reversing in groups of 3:\n";
     ll.printLinkedList();
-    ll.popBack();
-    ll.printLinkedList();
-    ll.insert(5, 1);
-    ll.printLinkedList();
-    std::cout << "Search for 2: " << ll.search(2) << std::endl;
-    std::cout << "Search for 5: " << ll.search(5) << std::endl;
-    std::cout << "Search for 10: " << ll.search(10) << std::endl;
+
     return 0;
 }
+

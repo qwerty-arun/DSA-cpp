@@ -1,28 +1,34 @@
 #include <iostream>
+#include <unordered_map>
 
 class Node {
 public:
     int data;
     Node* next;
+    Node* random;
 
+    // Constructor for the Node class [1]
     Node(int value) {
         data = value;
-        next = nullptr; 
+        next = nullptr; // Initialising next pointer to null [2]
     }
 };
 
 class List {
 private:
-    Node* head;
-    Node* tail;
+    Node* head; // Head pointer to the first node [2, 3]
+    Node* tail; // Tail pointer to the last node (optional but used in some operations) [2, 3]
 
 public:
+    // Constructor for the List class [2]
     List() {
-        head = nullptr;
-        tail = nullptr;
+        head = nullptr; // Initially, an empty list has a null head [4]
+        tail = nullptr; // Initially, an empty list has a null tail [4]
     }
 
+    // Function to add a new node at the beginning of the linked list (push front) [4, 5]
     void pushFront(int value) {
+        // Create a new node [5]
         Node* newNode = new Node(value); // Using the constructor of the Node class [5]
 
         // Case 1: If the linked list is empty [4, 5]
@@ -161,7 +167,31 @@ public:
         }
         return -1; // If the key is not found, return -1 [20]
     }
-
+Node* copyRandomList(Node* head) {
+    if (head == nullptr) {
+        return nullptr;
+    }
+    std::unordered_map<Node*, Node*>m;
+    Node* newHead = new Node(head->data);
+    m[head] = newHead;
+    Node* oldTemp = head->next;
+    Node* newTemp = newHead;
+    while (oldTemp != nullptr) {
+        Node* copyNode = new Node(oldTemp->data);
+        newTemp->next = copyNode;
+        m[oldTemp] = copyNode;
+        oldTemp = oldTemp->next;
+        newTemp = newTemp->next;
+    }
+    oldTemp = head;
+    newTemp = newHead;
+    while (oldTemp != nullptr) {
+        newTemp->random = m[oldTemp->random];
+        oldTemp = oldTemp->next;
+        newTemp = newTemp->next;
+    }
+    return newHead;
+}
     void reverseList() //At last prev becomes the head
     {
         Node* prev = nullptr;

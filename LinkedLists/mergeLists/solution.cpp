@@ -5,24 +5,28 @@ public:
     int data;
     Node* next;
 
+    // Constructor for the Node class [1]
     Node(int value) {
         data = value;
-        next = nullptr; 
+        next = nullptr; // Initialising next pointer to null [2]
     }
 };
 
 class List {
 private:
-    Node* head;
-    Node* tail;
+    Node* head; // Head pointer to the first node [2, 3]
+    Node* tail; // Tail pointer to the last node (optional but used in some operations) [2, 3]
 
 public:
+    // Constructor for the List class [2]
     List() {
-        head = nullptr;
-        tail = nullptr;
+        head = nullptr; // Initially, an empty list has a null head [4]
+        tail = nullptr; // Initially, an empty list has a null tail [4]
     }
 
+    // Function to add a new node at the beginning of the linked list (push front) [4, 5]
     void pushFront(int value) {
+        // Create a new node [5]
         Node* newNode = new Node(value); // Using the constructor of the Node class [5]
 
         // Case 1: If the linked list is empty [4, 5]
@@ -161,37 +165,55 @@ public:
         }
         return -1; // If the key is not found, return -1 [20]
     }
-
-    void reverseList() //At last prev becomes the head
+    Node* returnHead()
     {
-        Node* prev = nullptr;
-        Node* curr = head;
-        Node* next = nullptr;
-        tail = head; //After reversal, the current head becomes the tail
-
-        while(curr!=nullptr)
-        {
-            next = curr->next;
-
-            curr->next= prev;
-
-            prev = curr;
-
-            curr= next;
-        }
-        head = prev;
+        return head;
     }
 };
 
+
+    Node* merge2Lists(Node* head1, Node* head2)
+    {
+        if(head1==nullptr || head2==nullptr)
+        {
+            return head1 == nullptr? head2:head1;
+        } 
+        if(head1->data <= head2->data)
+        {
+            head1->next = merge2Lists(head1->next, head2);
+            return head1;
+        }
+        else
+        {
+            head2->next = merge2Lists(head1, head2->next);
+            return head2;
+        }
+    }
+    void printLinkedList(Node* head) {
+        Node* temp = head; 
+        while (temp != nullptr) {
+            std::cout << temp->data << " -> "; 
+            temp = temp->next;
+        }
+        std::cout << "nullptr" << std::endl;
+    }
+
+
 int main() {
-    List ll;
-    ll.pushFront(1);
-    ll.pushFront(2);
-    ll.pushFront(3);
-    std::cout << "Original Linked List: ";
-    ll.printLinkedList();
-    ll.reverseList();
-    std::cout << "Reversed Linked List: ";
-    ll.printLinkedList();
+    List list1, list2;
+    list1.pushBack(1);
+    list1.pushBack(2);
+    list1.pushBack(3);
+    list1.printLinkedList();
+
+    list2.pushBack(2);
+    list2.pushBack(3);
+    list2.pushBack(6);
+    list2.printLinkedList();
+
+    Node* head1 = list1.returnHead();
+    Node* head2 = list2.returnHead();
+    Node* mergedList = merge2Lists(head1,head2);
+    printLinkedList(mergedList);
     return 0;
 }

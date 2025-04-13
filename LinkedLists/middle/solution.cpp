@@ -5,24 +5,28 @@ public:
     int data;
     Node* next;
 
+    // Constructor for the Node class [1]
     Node(int value) {
         data = value;
-        next = nullptr; 
+        next = nullptr; // Initialising next pointer to null [2]
     }
 };
 
 class List {
 private:
-    Node* head;
-    Node* tail;
+    Node* head; // Head pointer to the first node [2, 3]
+    Node* tail; // Tail pointer to the last node (optional but used in some operations) [2, 3]
 
 public:
+    // Constructor for the List class [2]
     List() {
-        head = nullptr;
-        tail = nullptr;
+        head = nullptr; // Initially, an empty list has a null head [4]
+        tail = nullptr; // Initially, an empty list has a null tail [4]
     }
 
+    // Function to add a new node at the beginning of the linked list (push front) [4, 5]
     void pushFront(int value) {
+        // Create a new node [5]
         Node* newNode = new Node(value); // Using the constructor of the Node class [5]
 
         // Case 1: If the linked list is empty [4, 5]
@@ -162,25 +166,19 @@ public:
         return -1; // If the key is not found, return -1 [20]
     }
 
-    void reverseList() //At last prev becomes the head
+    void middle()
     {
-        Node* prev = nullptr;
-        Node* curr = head;
-        Node* next = nullptr;
-        tail = head; //After reversal, the current head becomes the tail
-
-        while(curr!=nullptr)
+        Node* slow = head;
+        Node* fast= head;
+        while(fast!=nullptr && fast->next!=nullptr)
         {
-            next = curr->next;
-
-            curr->next= prev;
-
-            prev = curr;
-
-            curr= next;
+            slow = slow->next;
+            fast = fast->next->next;
         }
-        head = prev;
+
+        std::cout<<"Middle Element: "<<slow->data;
     }
+
 };
 
 int main() {
@@ -188,10 +186,10 @@ int main() {
     ll.pushFront(1);
     ll.pushFront(2);
     ll.pushFront(3);
+    ll.pushFront(9);
+    ll.pushFront(7);
     std::cout << "Original Linked List: ";
     ll.printLinkedList();
-    ll.reverseList();
-    std::cout << "Reversed Linked List: ";
-    ll.printLinkedList();
+    ll.middle();
     return 0;
 }

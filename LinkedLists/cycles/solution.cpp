@@ -5,24 +5,28 @@ public:
     int data;
     Node* next;
 
+    // Constructor for the Node class [1]
     Node(int value) {
         data = value;
-        next = nullptr; 
+        next = nullptr; // Initialising next pointer to null [2]
     }
 };
 
 class List {
 private:
-    Node* head;
-    Node* tail;
+    Node* head; // Head pointer to the first node [2, 3]
+    Node* tail; // Tail pointer to the last node (optional but used in some operations) [2, 3]
 
 public:
+    // Constructor for the List class [2]
     List() {
-        head = nullptr;
-        tail = nullptr;
+        head = nullptr; // Initially, an empty list has a null head [4]
+        tail = nullptr; // Initially, an empty list has a null tail [4]
     }
 
+    // Function to add a new node at the beginning of the linked list (push front) [4, 5]
     void pushFront(int value) {
+        // Create a new node [5]
         Node* newNode = new Node(value); // Using the constructor of the Node class [5]
 
         // Case 1: If the linked list is empty [4, 5]
@@ -162,25 +166,79 @@ public:
         return -1; // If the key is not found, return -1 [20]
     }
 
-    void reverseList() //At last prev becomes the head
+
+    void makeLoop()
     {
-        Node* prev = nullptr;
-        Node* curr = head;
-        Node* next = nullptr;
-        tail = head; //After reversal, the current head becomes the tail
-
-        while(curr!=nullptr)
+        Node* temp = head;
+        while(temp->next!=nullptr)
         {
-            next = curr->next;
-
-            curr->next= prev;
-
-            prev = curr;
-
-            curr= next;
+            temp = temp->next;
         }
-        head = prev;
+        temp->next = head->next; //1 -> 3 -> 2 ->1 will be the loop
     }
+    bool cycle()
+    {
+        Node* slow = head;
+        Node* fast= head;
+
+        while(fast!=nullptr && fast->next!=nullptr)
+        {
+            slow = slow->next;
+            fast = fast->next->next;
+
+            if(slow == fast)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    Node* startOfLoop()
+    {
+        Node* slow = head;
+        Node* fast= head;
+        bool isCycle = false;
+
+        while(fast!=nullptr && fast->next!=nullptr)
+        {
+            slow = slow->next;
+            fast = fast->next->next;
+
+            if(slow == fast)
+            {
+                isCycle = true;
+                break;
+            }
+        }
+        if(!isCycle)
+        {
+            std::cout<<"Not cycle exists!\n";
+            return nullptr;
+        }
+        slow = head;
+        Node* prev = nullptr;
+        while (slow!=fast) 
+        {
+            slow = slow->next;
+            prev = fast;
+            fast = fast->next;
+        }
+        prev->next = nullptr; //remove cycle
+        return slow;
+    }
+
+    void removeLoop(Node* startOfLoop)
+    {
+        Node* temp = startOfLoop;
+        while(temp->next!=startOfLoop)
+        {
+            temp = temp->next;
+        }
+        temp->next = nullptr;
+        tail = temp;
+    }
+
 };
 
 int main() {
@@ -188,10 +246,19 @@ int main() {
     ll.pushFront(1);
     ll.pushFront(2);
     ll.pushFront(3);
+    ll.pushFront(4);
     std::cout << "Original Linked List: ";
     ll.printLinkedList();
-    ll.reverseList();
-    std::cout << "Reversed Linked List: ";
+    ll.makeLoop();
+    if(ll.cycle())
+    {
+        std::cout<<"Cycle detected!\n";
+    }
+    else
+        std::cout<<"No cycle!\n";
+    Node* startOfLoop = ll.startOfLoop();
+    std::cout<<"Start of Loop: "<<startOfLoop->data<<"\n";
+    /*ll.removeLoop(startOfLoop);*/
     ll.printLinkedList();
     return 0;
 }
